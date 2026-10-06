@@ -1,0 +1,20 @@
+[
+    {
+    "id":1,
+    "title": "Learn React",
+    "content": "Learn useState, useEffect, props, components and React fundamentals.",
+    "category": "Study"
+  },
+  {
+    "id":2,
+    "title": "Project Ideas",
+    "content": "Build an expense tracker, weather app and an e-commerce dashboard.",
+    "category": "Ideas"
+  },
+  {
+    "id":3,
+    "title": "Gym Plan",
+    "content": "Monday: Chest, Tuesday: Back, Wednesday: Legs and continue with the weekly workout plan.",
+    "category": "Personal"
+  }
+]

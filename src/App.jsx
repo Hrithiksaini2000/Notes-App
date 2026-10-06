@@ -1,6 +1,12 @@
+import { useState } from 'react'
 import './App.css'
+import notesdata from "./Api/notes.json"
 
 export const App = () =>{
+
+  // Notes State is created 
+  const [notes, Setnotes] = useState(notesdata)
+  
   return (
     <div className="min-h-full bg-gray-100 px-4 py-8">
 
@@ -24,7 +30,7 @@ export const App = () =>{
             <input
               type="text"
               placeholder="Search notes..."
-              className="w-64 rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none focus:border-blue-500"
+              className="w-full sm:w-64 rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none focus:border-blue-500"
             />
           </div>
         </header>
