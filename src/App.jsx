@@ -4,8 +4,15 @@ import notesdata from "./Api/notes.json"
 
 export const App = () =>{
 
-  // Notes State is created 
+  // Notes State is created in which our cards data will be come 
   const [notes, Setnotes] = useState(notesdata)
+
+  // Title, Content, Category State is created  
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const [category, setCategory] = useState("Personal")
+  
+  console.log(title,content,category)
   
   return (
     <div className="min-h-full bg-gray-100 px-4 py-8">
@@ -48,6 +55,8 @@ export const App = () =>{
             type="text"
             placeholder="Note title..."
             className="mb-4 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+            value={title}
+            onChange={(e)=> setTitle(e.target.value)}
           />
 
           {/* Note Content */}
@@ -55,13 +64,15 @@ export const App = () =>{
             placeholder="Write your note here..."
             rows="5"
             className="mb-4 w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+            value={content}
+            onChange={(e)=> setContent(e.target.value)}
           ></textarea>
 
 
           {/* Category + Button */}
           <div className="flex items-center justify-between">
 
-            <select className="rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none">
+            <select className="rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none" value={category} onChange={(e)=>setCategory(e.target.value)}>
               <option>Personal</option>
               <option>Work</option>
               <option>Ideas</option>
