@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import notesdata from "./Api/notes.json"
 
-export const App = () =>{
+export const App = () => {
 
   // Notes State is created in which our cards data will be come 
   const [notes, Setnotes] = useState(notesdata)
@@ -11,9 +11,37 @@ export const App = () =>{
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [category, setCategory] = useState("Personal")
-  
-  console.log(title,content,category)
-  
+
+  // Add a note function 
+  const addnote = () => {
+
+    if (!title.trim() || !content.trim()) {
+      return
+    }
+
+    const newNote = {
+      id: Date.now(),
+      title: title,
+      content: content,
+      category: category
+    }
+
+    Setnotes([...notes, newNote])
+
+    setTitle("")
+    setContent("")
+    setCategory("Personal")
+
+    console.log(title)
+    console.log(content)
+    console.log(category)
+  }
+
+  // Delete a note function  
+  const deletenote = (id) => {
+    Setnotes(notes.filter((note) => note.id !== id))
+  }
+
   return (
     <div className="min-h-full bg-gray-100 px-4 py-8">
 
@@ -56,7 +84,7 @@ export const App = () =>{
             placeholder="Note title..."
             className="mb-4 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
             value={title}
-            onChange={(e)=> setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
 
           {/* Note Content */}
@@ -65,21 +93,21 @@ export const App = () =>{
             rows="5"
             className="mb-4 w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
             value={content}
-            onChange={(e)=> setContent(e.target.value)}
+            onChange={(e) => setContent(e.target.value)}
           ></textarea>
 
 
           {/* Category + Button */}
           <div className="flex items-center justify-between">
 
-            <select className="rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none" value={category} onChange={(e)=>setCategory(e.target.value)}>
+            <select className="rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none" value={category} onChange={(e) => setCategory(e.target.value)}>
               <option>Personal</option>
               <option>Work</option>
               <option>Ideas</option>
               <option>Study</option>
             </select>
 
-            <button className="rounded-lg bg-indigo-900 px-6 py-2 font-medium text-white hover:bg-green-700">
+            <button onClick={addnote} className="rounded-lg bg-indigo-900 px-6 py-2 font-medium text-white hover:bg-green-700">
               Add Note
             </button>
 
@@ -112,105 +140,44 @@ export const App = () =>{
 
         {/* Notes Grid */}
         <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {notes.map((note) => {
+            return (
+              <div key={note.id} className="rounded-xl bg-green-100 p-5 shadow-sm">
 
-          {/* Note Card 1 */}
-          <div className="rounded-xl bg-yellow-100 p-5 shadow-sm">
+                <div className="mb-3 flex items-start justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {note.title}
+                  </h3>
 
-            <div className="mb-3 flex items-start justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Learn React
-              </h3>
+                  <span className="rounded-full bg-yellow-200 px-3 py-1 text-xs font-medium">
+                    {note.category}
+                  </span>
+                </div>
 
-              <span className="rounded-full bg-yellow-200 px-3 py-1 text-xs font-medium">
-                Study
-              </span>
-            </div>
+                <p className="mb-6 text-sm leading-6 text-gray-700">
+                  {note.content}
+                </p>
 
-            <p className="mb-6 text-sm leading-6 text-gray-700">
-              Learn useState, useEffect, props, components and React
-              fundamentals.
-            </p>
+                <div className="flex justify-end gap-2">
+                  <button className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
+                    Edit
+                  </button>
 
-            <div className="flex justify-end gap-2">
-              <button className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
-                Edit
-              </button>
+                  <button onClick={() => deletenote(note.id)} className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white hover:bg-red-600">
+                    Delete
+                  </button>
+                </div>
 
-              <button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white hover:bg-red-600">
-                Delete
-              </button>
-            </div>
-
-          </div>
-
-
-          {/* Note Card 2 */}
-          <div className="rounded-xl bg-blue-100 p-5 shadow-sm">
-
-            <div className="mb-3 flex items-start justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Project Ideas
-              </h3>
-
-              <span className="rounded-full bg-blue-200 px-3 py-1 text-xs font-medium">
-                Ideas
-              </span>
-            </div>
-
-            <p className="mb-6 text-sm leading-6 text-gray-700">
-              Build an expense tracker, weather app and an e-commerce
-              dashboard.
-            </p>
-
-            <div className="flex justify-end gap-2">
-              <button className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
-                Edit
-              </button>
-
-              <button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white hover:bg-red-600">
-                Delete
-              </button>
-            </div>
-
-          </div>
-
-
-          {/* Note Card 3 */}
-          <div className="rounded-xl bg-green-100 p-5 shadow-sm">
-
-            <div className="mb-3 flex items-start justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Gym Plan
-              </h3>
-
-              <span className="rounded-full bg-green-200 px-3 py-1 text-xs font-medium">
-                Personal
-              </span>
-            </div>
-
-            <p className="mb-6 text-sm leading-6 text-gray-700">
-              Monday: Chest, Tuesday: Back, Wednesday: Legs and continue
-              with the weekly workout plan.
-            </p>
-
-            <div className="flex justify-end gap-2">
-              <button className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
-                Edit
-              </button>
-
-              <button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white hover:bg-red-600">
-                Delete
-              </button>
-            </div>
-
-          </div>
+              </div>
+            )
+          })}
 
         </section>
 
 
         {/* Footer */}
         <footer className="mt-8 text-center text-sm text-gray-500">
-          3 notes
+          {notes.length} Notes
         </footer>
 
       </div>
