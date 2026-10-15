@@ -12,6 +12,9 @@ export const App = () => {
   const [content, setContent] = useState("")
   const [category, setCategory] = useState("Personal")
 
+  // Edit State is created 
+  const [editid, setEditid] = useState(null)
+
   // Add a note function 
   const addnote = () => {
 
@@ -35,6 +38,41 @@ export const App = () => {
     console.log(title)
     console.log(content)
     console.log(category)
+  }
+
+  // Update a Note Function 
+  const updatenote = () =>{
+
+    if(!title.trim() || !content.trim()){
+      return
+    }
+
+    const updatednotes = notes.map((note)=>{
+      if(note.id === editid){
+        return{
+          ...note,
+          title,
+          content,
+          category
+        }
+      }
+      return note
+    })
+
+    Setnotes(updatednotes)
+
+    setEditid(null)
+    setTitle("")
+    setContent("")
+    setCategory("Personal")
+  }
+
+  // Start Edit Function 
+  const startedit = (note) => {
+    setEditid(note.id)
+    setTitle(note.title)
+    setContent(note.content)
+    setCategory(note.category)
   }
 
   // Delete a note function  
@@ -69,7 +107,6 @@ export const App = () => {
             />
           </div>
         </header>
-
 
         {/* Add Note Section */}
         <section className="mb-8 rounded-xl bg-white p-6 shadow-sm">
@@ -107,8 +144,8 @@ export const App = () => {
               <option>Study</option>
             </select>
 
-            <button onClick={addnote} className="rounded-lg bg-indigo-900 px-6 py-2 font-medium text-white hover:bg-green-700">
-              Add Note
+            <button onClick={editid !== null ? updatenote : addnote} className="rounded-lg bg-indigo-900 px-6 py-2 font-medium text-white hover:bg-green-700">
+              {editid !== null ? "Update Note" : "Add Note"}
             </button>
 
           </div>
@@ -159,7 +196,7 @@ export const App = () => {
                 </p>
 
                 <div className="flex justify-end gap-2">
-                  <button className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
+                  <button onClick={() => startedit(note)} className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
                     Edit
                   </button>
 
