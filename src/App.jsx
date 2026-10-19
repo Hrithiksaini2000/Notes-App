@@ -15,6 +15,21 @@ export const App = () => {
   // Edit State is created 
   const [editid, setEditid] = useState(null)
 
+  // Search State is created 
+  const [search, setSearch] = useState("")
+
+  // Filter state is created 
+  const [filter, setFilter] = useState("All")
+
+  // Filtered Notes Function 
+  const filterednotes = notes.filter((note) => {
+    const matcheSearch = note.title.toLowerCase().includes(search.toLowerCase()) || note.content.toLowerCase().includes(search.toLowerCase())
+
+    const matchesCategory = filter === "All" || note.category === filter
+
+    return matcheSearch && matchesCategory
+  })
+
   // Add a note function 
   const addnote = () => {
 
@@ -41,15 +56,15 @@ export const App = () => {
   }
 
   // Update a Note Function 
-  const updatenote = () =>{
+  const updatenote = () => {
 
-    if(!title.trim() || !content.trim()){
+    if (!title.trim() || !content.trim()) {
       return
     }
 
-    const updatednotes = notes.map((note)=>{
-      if(note.id === editid){
-        return{
+    const updatednotes = notes.map((note) => {
+      if (note.id === editid) {
+        return {
           ...note,
           title,
           content,
@@ -74,7 +89,6 @@ export const App = () => {
     setContent(note.content)
     setCategory(note.category)
   }
-
   // Delete a note function  
   const deletenote = (id) => {
     Setnotes(notes.filter((note) => note.id !== id))
@@ -103,6 +117,8 @@ export const App = () => {
             <input
               type="text"
               placeholder="Search notes..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full sm:w-64 rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none focus:border-blue-500"
             />
           </div>
@@ -155,29 +171,20 @@ export const App = () => {
 
         {/* Filters */}
         <div className="mb-6 flex gap-3">
-
-          <button className="rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white">
-            All
-          </button>
-
-          <button className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-            Personal
-          </button>
-
-          <button className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-            Work
-          </button>
-
-          <button className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-            Ideas
-          </button>
+          {["All", "Personal", "Work", "Ideas"].map((item) => {
+            return (
+              <button key={item} onClick={() => setFilter(item)} className={`rounded-lg px-4 py-2 text-sm font-medium ${filter === item ? `bg-gray-950 text-white` : `bg-white text-gray-700 shadow-sm hover:bg-gray-50`}`}>
+                {item}
+              </button>
+            )
+          })}
 
         </div>
 
 
         {/* Notes Grid */}
         <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {notes.map((note) => {
+          {filterednotes.map((note) => {
             return (
               <div key={note.id} className="rounded-xl bg-green-100 p-5 shadow-sm">
 
@@ -214,7 +221,7 @@ export const App = () => {
 
         {/* Footer */}
         <footer className="mt-8 text-center text-sm text-gray-500">
-          {notes.length} Notes
+          {filterednotes.length} Notes
         </footer>
 
       </div>
