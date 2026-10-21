@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import './App.css'
 import notesdata from "./Api/notes.json"
+import { Header } from './components/Header'
+import { Noteform } from './components/Noteform'
+import { Filters } from './components/Filters'
+import { Notelist } from './components/Notelist'
+import { Footer } from './components/Footer'
 
 export const App = () => {
 
@@ -100,129 +105,15 @@ export const App = () => {
       {/* Main Container */}
       <div className="mx-auto max-w-7xl">
 
-        {/* Header */}
-        <header className="mb-8 flex items-start sm:items-center justify-between flex-col sm:flex-row">
-          <div className='mb-4'>
-            <h1 className="text-3xl font-bold text-gray-900">
-              📝 My Notes
-            </h1>
+        <Header search={search} setSearch={setSearch} />
 
-            <p className="mt-1 text-gray-500">
-              Capture your ideas and keep your thoughts organized.
-            </p>
-          </div>
+        <Noteform title={title} content={content} category={category} setTitle={setTitle} setContent={setContent} setCategory={setCategory} editid={editid} updatenote={updatenote} addnote={addnote} />
 
-          {/* Search */}
-          <div className='w-full sm:w-64'>
-            <input
-              type="text"
-              placeholder="Search notes..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full sm:w-64 rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none focus:border-blue-500"
-            />
-          </div>
-        </header>
+        <Filters filter={filter} setFilter={setFilter} />
 
-        {/* Add Note Section */}
-        <section className="mb-8 rounded-xl bg-white p-6 shadow-sm">
+        <Notelist filterednotes={filterednotes} startedit={startedit} deletenote={deletenote} />
 
-          <h2 className="mb-4 text-xl font-semibold text-gray-800">
-            Create a new note
-          </h2>
-
-          {/* Note Title */}
-          <input
-            type="text"
-            placeholder="Note title..."
-            className="mb-4 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-
-          {/* Note Content */}
-          <textarea
-            placeholder="Write your note here..."
-            rows="5"
-            className="mb-4 w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-
-
-          {/* Category + Button */}
-          <div className="flex items-center justify-between">
-
-            <select className="rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none" value={category} onChange={(e) => setCategory(e.target.value)}>
-              <option>Personal</option>
-              <option>Work</option>
-              <option>Ideas</option>
-              <option>Study</option>
-            </select>
-
-            <button onClick={editid !== null ? updatenote : addnote} className="rounded-lg bg-indigo-900 px-6 py-2 font-medium text-white hover:bg-green-700">
-              {editid !== null ? "Update Note" : "Add Note"}
-            </button>
-
-          </div>
-
-        </section>
-
-
-        {/* Filters */}
-        <div className="mb-6 flex gap-3">
-          {["All", "Personal", "Work", "Ideas"].map((item) => {
-            return (
-              <button key={item} onClick={() => setFilter(item)} className={`rounded-lg px-4 py-2 text-sm font-medium ${filter === item ? `bg-gray-950 text-white` : `bg-white text-gray-700 shadow-sm hover:bg-gray-50`}`}>
-                {item}
-              </button>
-            )
-          })}
-
-        </div>
-
-
-        {/* Notes Grid */}
-        <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filterednotes.map((note) => {
-            return (
-              <div key={note.id} className="rounded-xl bg-green-100 p-5 shadow-sm">
-
-                <div className="mb-3 flex items-start justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {note.title}
-                  </h3>
-
-                  <span className="rounded-full bg-yellow-200 px-3 py-1 text-xs font-medium">
-                    {note.category}
-                  </span>
-                </div>
-
-                <p className="mb-6 text-sm leading-6 text-gray-700">
-                  {note.content}
-                </p>
-
-                <div className="flex justify-end gap-2">
-                  <button onClick={() => startedit(note)} className="rounded-md bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
-                    Edit
-                  </button>
-
-                  <button onClick={() => deletenote(note.id)} className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white hover:bg-red-600">
-                    Delete
-                  </button>
-                </div>
-
-              </div>
-            )
-          })}
-
-        </section>
-
-
-        {/* Footer */}
-        <footer className="mt-8 text-center text-sm text-gray-500">
-          {filterednotes.length} Notes
-        </footer>
+        <Footer filterednotes={filterednotes} />
 
       </div>
     </div>
