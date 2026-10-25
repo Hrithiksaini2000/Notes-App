@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import notesdata from "./Api/notes.json"
 import { Header } from './components/Header'
@@ -10,7 +10,17 @@ import { Footer } from './components/Footer'
 export const App = () => {
 
   // Notes State is created in which our cards data will be come 
-  const [notes, Setnotes] = useState(notesdata)
+  const [notes, Setnotes] = useState(()=>{
+    // Here we get the new saved note 
+    const savednotes = localStorage.getItem("SavedValues")
+
+    // And here we convert the save note string into array 
+    if (savednotes){
+      return JSON.parse(savednotes)
+    }
+
+    return notesdata
+  })
 
   // Title, Content, Category State is created  
   const [title, setTitle] = useState("")
@@ -25,6 +35,8 @@ export const App = () => {
 
   // Filter state is created 
   const [filter, setFilter] = useState("All")
+
+  const [darkmode, setDarkmode] = useState(false)
 
   // Filtered Notes Function 
   const filterednotes = notes.filter((note) => {
@@ -59,6 +71,11 @@ export const App = () => {
     console.log(content)
     console.log(category)
   }
+
+  useEffect(() => {
+    // Here we are save the new note in the  local storage set item and convert the array data into string using json stringify 
+    localStorage.setItem("SavedValues", JSON.stringify(notes))
+  }, [notes])
 
   // Update a Note Function 
   const updatenote = () => {
@@ -100,12 +117,12 @@ export const App = () => {
   }
 
   return (
-    <div className="min-h-full bg-gray-100 px-4 py-8">
+    <div className={`min-h-full ${darkmode ? "bg-gray-900" : "bg-gray-100"} px-4 py-8`}>
 
       {/* Main Container */}
       <div className="mx-auto max-w-7xl">
 
-        <Header search={search} setSearch={setSearch} />
+        <Header search={search} setSearch={setSearch} setDarkmode={setDarkmode} darkmode={darkmode} />
 
         <Noteform title={title} content={content} category={category} setTitle={setTitle} setContent={setContent} setCategory={setCategory} editid={editid} updatenote={updatenote} addnote={addnote} />
 

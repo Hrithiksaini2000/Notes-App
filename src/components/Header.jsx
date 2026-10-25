@@ -1,20 +1,24 @@
 // Header and search Component 
 
-export const Header = ({ search, setSearch }) => {
+export const Header = ({ search, setSearch, setDarkmode, darkmode }) => {
+
     return (
         <>
             {/* Header */}
             <header className="mb-8 flex items-start sm:items-center justify-between flex-col sm:flex-row">
                 <div className='mb-4'>
-                    <h1 className="text-3xl font-bold text-gray-900">
+                    <h1 className={`text-3xl font-bold ${darkmode ? "text-white" : "text-gray-900"}`}>
                         📝 My Notes
                     </h1>
 
-                    <p className="mt-1 text-gray-500">
+                    <p className={`mt-1 ${darkmode? "text-white" : "text-gray-500"}`}>
                         Capture your ideas and keep your thoughts organized.
                     </p>
                 </div>
 
+                <button onClick={()=> setDarkmode(!darkmode)} className="rounded-lg bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-700 hover:text-white">
+                {darkmode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+                </button>
                 {/* Search */}
                 <div className='w-full sm:w-64'>
                     <input
