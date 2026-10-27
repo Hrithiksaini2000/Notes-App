@@ -5,22 +5,23 @@ export const Header = ({ search, setSearch, setDarkmode, darkmode }) => {
     return (
         <>
             {/* Header */}
-            <header className="mb-8 flex items-start sm:items-center justify-between flex-col sm:flex-row">
+            <header className="mb-8 flex flex-wrap items-start sm:items-center justify-between sm:flex-row">
                 <div className='mb-4'>
                     <h1 className={`text-3xl font-bold ${darkmode ? "text-white" : "text-gray-900"}`}>
                         📝 My Notes
                     </h1>
 
-                    <p className={`mt-1 ${darkmode? "text-white" : "text-gray-500"}`}>
+                    <p className={`mt-1 ${darkmode ? "text-white" : "text-gray-500"}`}>
                         Capture your ideas and keep your thoughts organized.
                     </p>
                 </div>
-
-                <button onClick={()=> setDarkmode(!darkmode)} className="rounded-lg bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-700 hover:text-white">
-                {darkmode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-                </button>
+                <div className="flex-1">
+                    <button onClick={() => setDarkmode(!darkmode)} className="rounded-lg bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-700 hover:text-white">
+                        {darkmode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+                    </button>
+                </div>
                 {/* Search */}
-                <div className='w-full sm:w-64'>
+                <div className='flex-1 w-full sm:w-64'>
                     <input
                         type="text"
                         placeholder="Search notes..."

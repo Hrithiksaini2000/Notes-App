@@ -117,7 +117,7 @@ export const App = () => {
   }
 
   return (
-    <div className={`min-h-full ${darkmode ? "bg-gray-900" : "bg-gray-100"} px-4 py-8`}>
+    <div className={`min-h-screen ${darkmode ? "bg-gray-900" : "bg-gray-100"} px-4 py-8`}>
 
       {/* Main Container */}
       <div className="mx-auto max-w-7xl">
